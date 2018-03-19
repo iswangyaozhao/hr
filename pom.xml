@@ -22,6 +22,7 @@
 		</plugins>
 	</build>
   <modules>
+  
     <module>hr-dao</module>
     <module>hr-service</module>
     <module>hr-controller</module>
