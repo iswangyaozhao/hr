@@ -14,8 +14,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
-    <finalName>hr-service</finalName>
-  </build>
+    <finalName>hr-dao</finalName>
+      </build>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
@@ -28,6 +28,11 @@
   		<artifactId>spring-test</artifactId>
   		<version>4.1.6.RELEASE</version>
   		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.acer</groupId>
+  		<artifactId>hr-dao</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>
