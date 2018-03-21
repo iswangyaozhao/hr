@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.SectionDao">
+	<insert id="add" parameterType="org.hr.pojo.Section"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into section(name,parentids,childids,principal,tel,fax,type,permissions,remark,num,post,url,percode,sortstring,level)
+			values(#{name},#{parentids},#{childids},#{principal},#{tel},#{fax},#{type},#{permissions},#{remark},#{num},#{post},#{url},#{percode},#{sortstring},#{level})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.Section">
+		update section set name = #{name},parentids = #{parentids},childids = #{childids},principal = #{principal},tel = #{tel},fax = #{fax},type = #{type},permissions = #{permissions},remark = #{remark},num = #{num},post = #{post},url = #{url},percode = #{percode},sortstring = #{sortstring},level = #{level}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from section where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.Section">
+		select * from section
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.Section">
+		select * from section where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.Section">
+		select * from section
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from section
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

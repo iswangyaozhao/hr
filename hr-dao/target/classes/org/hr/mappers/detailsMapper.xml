@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.DetailsDao">
+
+	<resultMap id="detailsMap" type="org.hr.pojo.Details" autoMapping="true">
+		<id column="id" jdbcType="INTEGER" property="id" />
+	</resultMap>
+
+	<insert id="add" parameterType="org.hr.pojo.Details"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into details(joinworktime,workyear,education,finishschool,major,graduatetime,courseslanguage,languagedcale,masterdegree,computerdcale,certificate,educationresume,specialty,hobbys,address,tel,height,weight,bloodtype,workrequire,zipcode,email,talenttype,talentlevel)
+			values(#{joinworktime},#{workyear},#{education},#{finishschool},#{major},#{graduatetime},#{courseslanguage},#{languagedcale},#{masterdegree},#{computerdcale},#{certificate},#{educationresume},#{specialty},#{hobbys},#{address},#{tel},#{height},#{weight},#{bloodtype},#{workrequire},#{zipcode},#{email},#{talenttype},#{talentlevel})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.Details">
+		update details setjoinworktime = #{joinworktime},workyear = #{workyear},education = #{education},finishschool = #{finishschool},major = #{major},graduatetime = #{graduatetime},courseslanguage = #{courseslanguage},languagedcale = #{languagedcale},masterdegree = #{masterdegree},computerdcale = #{computerdcale},certificate = #{certificate},educationresume = #{educationresume},specialty = #{specialty},hobbys = #{hobbys},address = #{address},tel = #{tel},height = #{height},weight = #{weight},bloodtype = #{bloodtype},workrequire = #{workrequire},zipcode = #{zipcode},email = #{email},talenttype = #{talenttype},talentlevel = #{talentlevel}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from details where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultMap="detailsMap">
+		select * from details
+	</select>
+	
+	<select id="getById" parameterType="int" resultMap="detailsMap">
+		select * from details where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultMap="detailsMap">
+		select * from details
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from details
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

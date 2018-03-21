@@ -26,6 +26,6 @@
   
     <module>hr-dao</module>
     <module>hr-service</module>
-    <module>hr-controller</module>
+    <module>hr-web</module>
   </modules>
 </project>

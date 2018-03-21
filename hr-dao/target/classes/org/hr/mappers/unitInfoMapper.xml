@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.UnitInfoDao">
+	<insert id="add" parameterType="org.hr.pojo.UnitInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into unitInfo(id,entrytime,jobs,employeeswork,position,jobtitle,basicsalary,status,bank,account,photo,sectionId)
+			values(#{id},#{entrytime},#{jobs},#{employeeswork},#{position},#{jobtitle},#{basicsalary},#{status},#{bank},#{account},#{photo},#{sectionId})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.UnitInfo">
+		update unitInfo set id = #{id},entrytime = #{entrytime},jobs = #{jobs},employeeswork = #{employeeswork},position = #{position},jobtitle = #{jobtitle},basicsalary = #{basicsalary},status = #{status},bank = #{bank},account = #{account},photo = #{photo},sectionId = #{sectionId}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from unitInfo where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.UnitInfo">
+		select * from unitInfo
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.UnitInfo">
+		select * from unitInfo where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.UnitInfo">
+		select * from unitInfo
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from unitInfo
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

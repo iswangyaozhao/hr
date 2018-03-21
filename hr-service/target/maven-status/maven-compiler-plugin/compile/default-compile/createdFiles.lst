@@ -1,0 +1,6 @@
+org\hr\service\impl\ArchivesServiceImpl.class
+org\hr\service\ArchivesService.class
+org\hr\service\RoleService.class
+org\hr\service\UserService.class
+org\hr\service\impl\UserServiceImpl.class
+org\hr\service\impl\RoleServiceImpl.class

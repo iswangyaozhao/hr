@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.RewardsPunishmentsInfoDao">
+	<insert id="add" parameterType="org.hr.pojo.RewardsPunishmentsInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into rewardsPunishmentsInfo(time,jcxiangmu,attribute,text,remark)
+			values(#{time},#{jcxiangmu},#{attribute},#{text},#{remark})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.RewardsPunishmentsInfo">
+		update rewardsPunishmentsInfo set id = #{id},time = #{time},jcxiangmu = #{jcxiangmu},attribute = #{attribute},text = #{text},remark = #{remark}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from rewardsPunishmentsInfo where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.RewardsPunishmentsInfo">
+		select * from rewardsPunishmentsInfo
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.RewardsPunishmentsInfo">
+		select * from rewardsPunishmentsInfo where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.RewardsPunishmentsInfo">
+		select * from rewardsPunishmentsInfo
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from rewardsPunishmentsInfo
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.OtherInfoDao">
+	<insert id="add" parameterType="org.hr.pojo.OtherInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into otherInfo(socialrelations,workexperience,learningexperience,accessory,remark)
+			values(#{socialrelations},#{workexperience},#{learningexperience},#{accessory},#{remark})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.OtherInfo">
+		update otherInfo set socialrelations = #{socialrelations},workexperience = #{workexperience},learningexperience = #{learningexperience},accessory = #{accessory},remark = #{remark}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from otherInfo where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.OtherInfo">
+		select * from otherInfo
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.OtherInfo">
+		select * from otherInfo where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.OtherInfo">
+		select * from otherInfo
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from otherInfo
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

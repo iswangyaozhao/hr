@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.ArchivesDao">
+
+
+	<resultMap id="archivesMap" type="org.hr.pojo.Archives" autoMapping="true">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<collection property="details" javaType="org.hr.pojo.Details" ofType="org.hr.pojo.Details" column="archivesdetailsid" select="org.hr.dao.DetailsDao.getById" ></collection>
+	</resultMap>
+
+
+
+	<insert id="add" parameterType="org.hr.pojo.Archives"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into archives(worknum,dsectionId,sex,name,birthday,marital,politicalface,health,idcard,archivesDetailsId,archivesUnitinfoId,archivesOtherinfoId,salt,nativeplace,national,contractinfoId,titleassessinfoId,certificateinfoId,rewardspunishmentsinfoId)
+			values(#{worknum},#{dsectionId},#{sex},#{name},#{birthday},#{marital},#{politicalface},#{health},#{idcard},#{details.id},#{archivesUnitinfoId},#{archivesOtherinfoId},#{salt},#{nativeplace},#{national},#{contractinfoId},#{titleassessinfoId},#{certificateinfoId},#{rewardspunishmentsinfoId})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.Archives">
+		update archives set worknum = #{worknum},dsectionId = #{dsectionId},sex = #{sex},name = #{name},birthday = #{birthday},marital = #{marital},politicalface = #{politicalface},health = #{health},idcard = #{idcard},archivesDetailsId = #{details.id},archivesUnitinfoId = #{archivesUnitinfoId},archivesOtherinfoId = #{archivesOtherinfoId},salt = #{salt},nativeplace = #{nativeplace},national = #{national},contractinfoId = #{contractinfoId},titleassessinfoId = #{titleassessinfoId},certificateinfoId = #{certificateinfoId},rewardspunishmentsinfoId = #{rewardspunishmentsinfoId}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from archives where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+				<if test="condition.name != null and condition.name != ''">
+				 	and name like concat('%',#{condition.name},'%')
+				</if>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll"  resultMap="archivesMap">
+		select * from archives
+	</select>
+	
+	<select id="getById" parameterType="int"  resultMap="archivesMap">
+		select * from archives where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultMap="archivesMap">
+		select * from archives
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from archives
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

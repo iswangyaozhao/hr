@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.UserRoleDao">
+	<insert id="add" parameterType="org.hr.pojo.UserRole"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into User_Role(id,userId,roleId)
+			values(#{id},#{userId},#{roleId})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.UserRole">
+		update User_Role set id = #{id},userId = #{userId},roleId = #{roleId}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from User_Role where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.UserRole">
+		select * from User_Role
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.UserRole">
+		select * from User_Role where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.UserRole">
+		select * from User_Role
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from User_Role
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

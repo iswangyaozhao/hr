@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.CertificateInfoDao">
+	<insert id="add" parameterType="org.hr.pojo.CertificateInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into certificateInfo(type,number,name,certificate,time,operant,periodstate,expire,state,remark,accessory)
+			values(#{type},#{number},#{name},#{certificate},#{time},#{operant},#{periodstate},#{expire},#{state},#{remark},#{accessory})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.CertificateInfo">
+		update certificateInfo set type = #{type},number = #{number},name = #{name},certificate = #{certificate},time = #{time},operant = #{operant},periodstate = #{periodstate},expire = #{expire},state = #{state},remark = #{remark},accessory = #{accessory}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from certificateInfo where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.CertificateInfo">
+		select * from certificateInfo
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.CertificateInfo">
+		select * from certificateInfo where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.CertificateInfo">
+		select * from certificateInfo
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from certificateInfo
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

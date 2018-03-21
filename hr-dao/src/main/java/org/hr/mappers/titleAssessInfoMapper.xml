@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.TitleAssessInfoDao">
+	<insert id="add" parameterType="org.hr.pojo.TitleAssessInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into titleAssessInfo(name,way,time,nextname,nexttime,remark,accessory)
+			values(#{name},#{way},#{time},#{nextname},#{nexttime},#{remark},#{accessory})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.TitleAssessInfo">
+		update titleAssessInfo set name = #{name},way = #{way},time = #{time},nextname = #{nextname},nexttime = #{nexttime},remark = #{remark},accessory = #{accessory}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from titleAssessInfo where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.TitleAssessInfo">
+		select * from titleAsses_sInfo
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.TitleAssessInfo">
+		select * from titleAssessInfo where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.TitleAssessInfo">
+		select * from titleAssessInfo
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from titleAssessInfo
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.OperationlogDao">
+	<insert id="add" parameterType="org.hr.pojo.OtherInfo"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into operationlog(user,ip,name,text,time)
+			values(#{user},#{ip},#{name},#{text},#{time})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.OtherInfo">
+		update operationlog set user = #{user},ip = #{ip},name = #{name},text = #{text},time = #{time}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from operationlog where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.OtherInfo">
+		select * from operationlog
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.OtherInfo">
+		select * from operationlog where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.OtherInfo">
+		select * from operationlog
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from operationlog
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

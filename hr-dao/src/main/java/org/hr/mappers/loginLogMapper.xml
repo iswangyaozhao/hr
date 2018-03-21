@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hr.dao.LoginLogDao">
+	<insert id="add" parameterType="org.hr.pojo.LoginLog"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into loginLog(user,ip,port,module,$jacocoData)
+			values(#{user},#{ip},#{port},#{module},#{$jacocoData})
+	</insert>
+	
+	<update id="update" parameterType="org.hr.pojo.LoginLog">
+		update loginLog set ,user = #{user},ip = #{ip},port = #{port},module = #{module},$jacocoData = #{$jacocoData}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from loginLog where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getAll" resultType="org.hr.pojo.LoginLog">
+		select * from loginLog
+	</select>
+	
+	<select id="getById" parameterType="int" resultType="org.hr.pojo.LoginLog">
+		select * from loginLog where id = #{id}
+	</select>
+	
+	<select id="getListByCondition" resultType="org.hr.pojo.LoginLog">
+		select * from loginLog
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from loginLog
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>
